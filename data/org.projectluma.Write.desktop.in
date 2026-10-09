@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=@APP_NAME@
+GenericName=Word Processor
+Comment=Create and edit polished documents with visible structure and safe file handling
+Exec=luma-write %f
+Icon=@APP_ID@
+Terminal=false
+StartupNotify=true
+StartupWMClass=@APP_ID@
+Categories=Office;WordProcessor;GTK;
+MimeType=application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.oasis.opendocument.text;application/msword;text/plain;
+Keywords=document;write;word processor;DOCX;ODT;report;letter;
+X-GNOME-UsesNotifications=true

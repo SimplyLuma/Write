@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <!-- These are established interoperable MIME types, not private Luma types. -->
+  <mime-type type="application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+    <comment>@DOCX_LABEL@</comment>
+  </mime-type>
+  <mime-type type="application/vnd.oasis.opendocument.text">
+    <comment>@ODT_LABEL@</comment>
+  </mime-type>
+  <mime-type type="application/msword">
+    <comment>@DOC_LABEL@</comment>
+  </mime-type>
+</mime-info>

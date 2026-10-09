@@ -1,0 +1,32 @@
+option(
+  'desktop',
+  type: 'feature',
+  value: 'auto',
+  description: 'Build the GTK 4 desktop application',
+)
+option(
+  'libreofficekit',
+  type: 'feature',
+  value: 'enabled',
+  description: 'Build the real LibreOfficeKit document engine adapter',
+)
+option(
+  'developer_tools',
+  type: 'boolean',
+  value: false,
+  description: 'Build fixture and engine diagnostic tools',
+)
+option(
+  'sanitizers',
+  type: 'combo',
+  choices: ['none', 'address', 'undefined'],
+  value: 'none',
+  description: 'Enable a supported compiler sanitizer',
+)
+option(
+  'profile',
+  type: 'combo',
+  choices: ['default', 'live'],
+  value: 'default',
+  description: 'Build profile; live gives a development build its own application ID',
+)

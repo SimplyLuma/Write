@@ -1,0 +1,33 @@
+#pragma once
+
+#mesondefine LUMA_SUITE_NAME
+#mesondefine LUMA_APP_NAME
+#mesondefine LUMA_APP_ID
+#mesondefine LUMA_ICON_NAME
+#mesondefine LUMA_DOCX_LABEL
+#mesondefine LUMA_ODT_LABEL
+#mesondefine LUMA_DOC_LABEL
+#mesondefine LUMA_PDF_LABEL
+#mesondefine LUMA_VERSION
+#mesondefine LUMA_HAS_DESKTOP
+#mesondefine LUMA_HAS_LIBREOFFICEKIT
+
+namespace luma::identity {
+
+inline constexpr const char* suite_name = LUMA_SUITE_NAME;
+inline constexpr const char* app_name = LUMA_APP_NAME;
+inline constexpr const char* app_id = LUMA_APP_ID;
+inline constexpr const char* icon_name = LUMA_ICON_NAME;
+inline constexpr const char* version = LUMA_VERSION;
+
+namespace document_labels {
+inline constexpr const char* docx = LUMA_DOCX_LABEL;
+inline constexpr const char* odt = LUMA_ODT_LABEL;
+inline constexpr const char* legacy_doc = LUMA_DOC_LABEL;
+inline constexpr const char* pdf = LUMA_PDF_LABEL;
+}  // namespace document_labels
+
+inline constexpr bool has_desktop = LUMA_HAS_DESKTOP;
+inline constexpr bool has_libreofficekit = LUMA_HAS_LIBREOFFICEKIT;
+
+}  // namespace luma::identity

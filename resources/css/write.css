@@ -1,0 +1,511 @@
+/* Write's own sheet. The window, title row, islands, gutters, buttons,
+ * connected groups, segments, dropdowns, sidebar rows and bars are the kit's
+ * (luma-appkit-base.css) and the toolkit's; this sheet only places them and
+ * styles what is Write's alone: the pages, the inspector rows, the menus.
+ * Sizes come from the kit's scale (4, 6, 8, 12, 16, 24) and its type sizes. */
+
+window.luma-write-window .editor-page { background: transparent; }
+
+/* The fixture draws the document, which the production engine normally owns.
+ * These are page geometry and document formatting, not toolkit controls. */
+.write-fixture-desk { padding: 20px 24px 112px; }
+/* Fit the 816px authored sheet into the 596px lane between both panels. */
+window:not(.compact) .write-document-island.inspector-open .write-fixture-desk {
+  padding-right: 296px;
+}
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper {
+  min-height: 772px;
+  padding: 64px 70px 70px;
+}
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-h1 { margin-bottom: 4px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-subtitle { margin-bottom: 25px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-h2 { margin-top: 15px; margin-bottom: 6px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-first-h2 { margin-top: 0; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-figcaption + .write-fixture-h2 { margin-top: 25px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-h3 { margin-top: 7px; margin-bottom: 4px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-p { margin-bottom: 10px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-blockquote { margin-top: 7px; margin-bottom: 18px; padding-left: 15px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-figcaption { margin-bottom: 20px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-table { margin: 3px 0 13px; }
+window:not(.compact) .write-document-island.inspector-open .write-fixture-paper .write-fixture-foot { margin-top: 29px; }
+.write-fixture-paper {
+  min-height: 1056px;
+  padding: 88px 96px 96px;
+  background: @luma_thumb_paper;
+  color: @luma_thumb_paper_ink;
+}
+.write-fixture-paper .write-fixture-h1 { margin-bottom: 6px; }
+.write-fixture-paper .write-fixture-subtitle { margin-bottom: 34px; }
+.write-fixture-paper .write-fixture-h2 { margin-top: 20px; margin-bottom: 8px; }
+.write-fixture-paper .write-fixture-first-h2 { margin-top: 0; }
+.write-fixture-paper .write-fixture-figcaption + .write-fixture-h2 { margin-top: 34px; }
+.write-fixture-paper .write-fixture-h3 { margin-top: 10px; margin-bottom: 6px; }
+.write-fixture-paper .write-fixture-p { margin-bottom: 14px; }
+.write-fixture-paper .write-fixture-blockquote {
+  margin-top: 10px;
+  margin-bottom: 24px;
+  padding: 2px 0 2px 20px;
+  box-shadow: inset 2.5px 0 0 @luma_accent;
+}
+.write-fixture-paper .write-fixture-image { margin: 0 0 8px; }
+.write-fixture-paper .write-fixture-image.selected {
+  border-radius: 8px;
+  border: 2px solid @luma_accent;
+}
+.write-fixture-paper .write-fixture-figcaption { margin-bottom: 28px; }
+.write-fixture-paper .write-fixture-table { margin: 4px 0 18px; }
+.write-fixture-paper .write-fixture-foot { margin-top: 40px; }
+.write-fixture-table > * { padding: 8px 12px; }
+window.compact .write-fixture-desk { padding: 160px 6px 104px; }
+window.compact .write-fixture-paper {
+  min-height: 0;
+  padding: 28px 18px 40px;
+}
+window.write-focus-mode .write-fixture-paper > * { opacity: .25; }
+window.write-focus-mode .write-fixture-paper > :first-child { opacity: 1; }
+
+/* ── Pages ─────────────────────────────────────────────────────────────── */
+
+@define-color write_canvas @luma_content;
+
+.write-canvas-host,
+.document-scroller,
+.document-scroller viewport {
+  background: @write_canvas;
+}
+
+/* Paper. Each page is a toolkit island resting on the canvas: the island's
+ * shadow tokens give it its lift in every appearance mode. Paper has no rim
+ * and nearly square corners, and its colour is the page theme's, not the
+ * treatment's: Sun is white paper, Moon is the dark page the engine paints
+ * (kMoonPage in document_canvas.hpp). */
+.document-page-layer .write-page.luma-island {
+  border: none;
+  border-radius: 2px;
+  background-color: #ffffff;
+}
+.document-page-layer.moon .write-page.luma-island {
+  background-color: #31353b;
+}
+
+/* ── Status bar: one quiet row of text and flat buttons ────────────────── */
+
+.write-status-bar {
+  min-height: 31px;
+  padding: 0 6px 0 12px;
+}
+.write-status-text {
+  color: @luma_muted;
+  font-size: 11px;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+.write-status-text b { color: @luma_ink; }
+.write-status-rule {
+  min-width: 1px;
+  min-height: 12px;
+  background: @luma_line;
+}
+button.write-status-button,
+button.write-zoom-button {
+  min-height: 24px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  box-shadow: none;
+}
+button.write-status-button:hover,
+button.write-zoom-button:hover { background: @luma_hover; }
+button.write-status-button.compatibility label { color: @luma_amber; font-size: 11px; font-weight: 650; }
+.write-zoom-value { min-width: 34px; color: @luma_ink; font-weight: 650; }
+.write-status-bar button.luma-icon-button.write-status-tool {
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 7px;
+}
+.write-footer-pill {
+  min-height: 36px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 10px;
+  background: @luma_bar_surface;
+  box-shadow: inset 0 1px 0 @luma_bar_highlight, 0 0 0 1px @luma_bar_ring,
+              0 8px 20px -6px @luma_bar_shadow;
+  color: @luma_ink;
+  font-size: 12px;
+  font-weight: 600;
+}
+.write-footer-pill image { color: @luma_muted; }
+button.write-footer-pill:hover { background: @luma_hover; }
+
+/* ── Side islands ──────────────────────────────────────────────────────── */
+
+.write-outline-island { min-width: 244px; }
+.write-inspector-island { min-width: 268px; }
+#wr-inspector label.lumaui-creative-pill-title { font-weight: 600; }
+
+.write-panel-header { padding: 0 12px; }
+.write-inspector .write-panel-header { padding: 0 8px; }
+.write-panel-back { margin: 8px 8px 0; }
+
+/* Outline: the kit's navigation rows, indented by level. */
+.write-outline-list {
+  padding: 0 6px 6px;
+  background: transparent;
+}
+.write-outline-list > row.luma-navigation-row {
+  min-height: 30px;
+  margin-bottom: 1px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.write-outline-list > row.luma-navigation-row.depth-1,
+.write-outline-list > row.luma-navigation-row.depth-2,
+.write-outline-list > row.luma-navigation-row.depth-3 {
+  color: @luma_muted;
+  font-weight: 550;
+}
+.write-outline-list > row.luma-navigation-row:selected { color: @luma_ink; }
+.write-outline-empty { padding: 4px 12px; }
+/* Inspector: tabs, then groups of 32px rows with hairlines between them. */
+.write-inspector-page { padding: 4px 12px 16px; }
+#wr-format .write-format-tabs { margin: 6px 12px 8px; }
+#wr-format .write-inspector-page { padding-top: 0; padding-bottom: 12px; }
+#wr-format .write-property { min-height: 32px; padding: 4px 0; border-top: none; }
+#wr-format .write-property-name { font-weight: 400; }
+#wr-format entry.write-combo {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 500;
+  background: @luma_well;
+  box-shadow: inset 0 0 0 1px @luma_well_ring, inset 0 1px 2px @luma_well_shade, 0 1px 0 @luma_well_lip;
+}
+#wr-format entry.write-combo:focus-within {
+  box-shadow: inset 0 0 0 1px @luma_well_ring, inset 0 1px 2px @luma_well_shade, 0 0 0 1.5px @luma_creative_selection;
+}
+#wr-format .write-inspector-disclosure { margin-top: 2px; font-size: 12px; color: @luma_muted; }
+#wr-format .write-inspector-disclosure > box { margin-top: 6px; }
+#wr-format button.write-group-action { font-weight: 500; }
+.write-group-title {
+  color: @luma_section_label;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .11em;
+}
+/* Rows give their controls air: 8px above and below, as the kit row does. */
+.write-property {
+  min-height: 32px;
+  padding: 8px 0;
+  border-top: 1px solid @luma_line_faint;
+}
+.write-properties > .write-property:first-child { border-top: 0; }
+.write-property-name {
+  color: @luma_muted;
+  font-size: 12px;
+  font-weight: 550;
+}
+.write-property-value {
+  color: @luma_ink;
+  font-size: 12px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.write-properties dropdown.luma-dropdown > button { min-height: 26px; padding: 0 8px; font-size: 12px; font-weight: 650; }
+.write-properties dropdown.luma-dropdown > button label { font-size: 12px; }
+.write-size-value {
+  color: @luma_ink;
+  font-size: 12px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.write-size-stepper > button.write-size-button { padding: 0 4px; }
+.write-size-menu { min-width: 96px; }
+.write-segment { font-size: 12px; }
+.write-segment > button { font-size: 12px; }
+.write-fill-group > button { min-width: 0; }
+button.write-group-action { font-size: 12px; font-weight: 650; }
+.write-table-actions > .write-table-action {
+  min-width: 0;
+  min-height: 32px;
+  border-radius: 8px;
+  background: @luma_hover;
+}
+.write-table-delete {
+  min-height: 32px;
+  margin-top: 8px;
+  border-radius: 8px;
+  background: @luma_hover;
+}
+
+.write-advanced-note {
+  color: @luma_muted;
+  font-size: 11px;
+}
+.write-advanced-row {
+  min-height: 28px;
+  font-size: 12px;
+  font-weight: 550;
+}
+
+/* ── Menus and popovers ────────────────────────────────────────────────── */
+
+#wr-action-center button.write-photo-size-compact {
+  min-width: 26px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.write-popover > contents { padding: 6px; }
+button.write-menu-row,
+menubutton.write-menu-row > button {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+  color: @luma_ink;
+  font-size: 13px;
+  font-weight: 550;
+}
+button.write-menu-row:hover,
+menubutton.write-menu-row > button:hover { background: @luma_hover; }
+button.write-menu-row image,
+menubutton.write-menu-row image { color: @luma_muted; }
+.write-menu-label { color: @luma_ink; }
+.write-menu-accel {
+  color: @luma_menu_shortcut;
+  font-size: 11px;
+  font-weight: 600;
+}
+.write-menu-separator { margin: 4px 6px; background: @luma_line; min-height: 1px; }
+.insert-menu { min-width: 220px; }
+.zoom-menu { min-width: 140px; }
+
+/* Style menu: each style names itself in its own face. */
+.style-menu { min-width: 240px; }
+.style-row { min-height: 36px; }
+.style-sample { color: @luma_ink; }
+.style-sample-title { font-size: 20px; font-weight: 600; }
+.style-sample-subtitle { font-size: 14px; color: @luma_muted; }
+.style-sample-heading-1 { font-size: 16px; font-weight: 650; }
+.style-sample-heading-2 { font-size: 14px; font-weight: 650; }
+.style-sample-heading-3 { font-size: 11px; font-weight: 700; letter-spacing: .09em; }
+.style-sample-body { font-family: serif; font-size: 13px; }
+.style-sample-quote { font-family: serif; font-style: italic; font-size: 13px; }
+.style-sample-list { font-size: 13px; }
+
+.colour-menu,
+.table-menu,
+.character-menu { padding: 6px; }
+button.colour-swatch {
+  min-width: 22px;
+  min-height: 22px;
+  padding: 0;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px alpha(@luma_ink, .18);
+}
+button.colour-swatch:hover { box-shadow: inset 0 0 0 2px @luma_ink; }
+button.table-cell {
+  min-width: 16px;
+  min-height: 16px;
+  padding: 0;
+  border-radius: 3px;
+  background: @luma_fill;
+  box-shadow: inset 0 0 0 1px @luma_line;
+}
+button.table-cell.chosen { background: alpha(@luma_accent, .35); box-shadow: inset 0 0 0 1px @luma_accent; }
+button.character-cell {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  border-radius: 7px;
+  background: transparent;
+  box-shadow: none;
+  font-size: 15px;
+}
+button.character-cell:hover { background: @luma_hover; }
+
+/* Margin comments. */
+.write-comment-card {
+  padding: 10px;
+  border-radius: 10px;
+  background: @luma_content;
+  box-shadow: inset 0 0 0 1px @luma_line, 0 2px 8px -4px alpha(black, .3);
+}
+.comment-author { font-size: 12px; font-weight: 700; color: @luma_ink; }
+.comment-time { font-size: 11px; font-weight: 600; color: @luma_muted; }
+.comment-body { font-size: 12px; color: @luma_ink; }
+.comment-avatar {
+  min-width: 22px;
+  min-height: 22px;
+  border-radius: 7px;
+  background: alpha(@luma_blue, .22);
+  color: @luma_ink;
+  font-size: 10px;
+  font-weight: 700;
+}
+.write-comments-list { padding: 0 12px 14px; }
+.write-inspector-comment {
+  padding: 10px;
+  border-radius: 10px;
+  background: @luma_fill;
+  box-shadow: inset 0 0 0 1px @luma_line_faint;
+}
+.write-inspector-comment:first-child { background: @luma_chip; }
+.write-comment-quote {
+  padding-left: 6px;
+  border-left: 2px solid @luma_amber;
+  color: @luma_muted;
+  font-size: 11px;
+  font-style: italic;
+}
+button.write-comment-action {
+  min-height: 20px;
+  padding: 0 3px;
+  border: none;
+  background: none;
+  box-shadow: none;
+  color: @luma_muted;
+  font-size: 11px;
+}
+button.write-comment-action:hover { color: @luma_ink; }
+
+/* ── Command search and toasts ─────────────────────────────────────────── */
+
+.palette-search-row {
+  min-height: 52px;
+  padding: 0 12px;
+  border-bottom: 1px solid @luma_line;
+}
+.palette-search-entry,
+.palette-search-entry > text {
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.palette-results { padding: 6px; background: transparent; }
+.palette-result { min-height: 48px; padding: 0 8px; border-radius: 10px; }
+.palette-result-title { font-weight: 650; }
+.palette-result-detail,
+.palette-empty,
+.palette-footer { color: @luma_muted; font-size: 11px; }
+.palette-empty { padding: 24px; }
+.palette-footer {
+  min-height: 31px;
+  padding: 0 12px;
+  border-top: 1px solid @luma_line;
+}
+.shortcut-hint {
+  padding: 2px 6px;
+  border-radius: 7px;
+  color: @luma_muted;
+  background: @luma_fill;
+  font-size: 11px;
+  font-weight: 600;
+}
+.write-empty-title { color: @luma_ink; font-size: 15px; font-weight: 650; }
+
+window.mobile-presentation .write-side-island { min-width: 0; }
+
+/* ── Editable combos: typeface, size, style ─────────────────────────────── */
+
+entry.write-combo {
+  min-height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 10px;
+  background: alpha(@luma_ink, .08);
+  box-shadow: inset 0 0 0 1px @luma_line;
+  color: @luma_ink;
+  font-size: 12px;
+  font-weight: 650;
+}
+entry.write-combo:hover { background: @luma_hover; }
+entry.write-combo:focus-within { box-shadow: inset 0 0 0 1px @luma_line, 0 0 0 2px alpha(@luma_accent, .55); }
+entry.write-combo > image { color: @luma_muted; -gtk-icon-size: 12px; }
+/* The size sits inside its stepper group, which carries the ring. */
+.write-size-stepper > entry.write-combo-size {
+  min-width: 34px;
+  padding: 0 2px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-variant-numeric: tabular-nums;
+}
+.write-size-stepper > entry.write-combo-size:focus-within { background: @luma_hover; box-shadow: none; }
+.write-combo-popover > contents { padding: 6px; }
+.write-combo-list { background: transparent; }
+.write-combo-list > row.write-combo-row {
+  min-height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: @luma_ink;
+  font-size: 13px;
+}
+.write-combo-list > row.write-combo-row:hover { background: @luma_hover; }
+.write-combo-list > row.write-combo-row:selected { background: @luma_selected; color: @luma_ink; }
+.write-combo-list > row.write-combo-section { min-height: 24px; padding: 6px 8px 2px; }
+.write-combo-create { color: @luma_accent; font-weight: 650; }
+.write-alignment-popover > contents { padding: 6px; }
+
+/* Opening preference uses the suite font with a clear checkbox gap. */
+window.luma-write-window .luma-creative-welcome checkbutton label {
+  font-family: Figtree, Inter, Cantarell, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  margin-left: 8px;
+}
+window.luma-write-window .luma-creative-welcome checkbutton:dir(rtl) label {
+  margin-left: 0;
+  margin-right: 8px;
+}
+window.luma-write-window .lumaui-creative-workspace { background: @write_canvas; }
+
+#wr-content-overlay { border-radius: 10px; }
+/* Numeric values need less width than paragraph style names; keep kit geometry. */
+window.luma-write-window button.lumaui-bar-menu.wr-font-size-selector {
+  --lumaui-bar-split-menu-min-width: 64px;
+}
+/* Thin recessed rules run through the desktop bar's command groups. */
+window.luma-write-window .lumaui-action-center:not(.phone) box.lumaui-bar-rule.space {
+  min-width: 1px;
+  min-height: 36px;
+  margin: -5px 5px;
+  border-radius: 0;
+  background: alpha(black, .24);
+  box-shadow: inset 0 1px 1px alpha(black, .16);
+}
+
+/* Mixed selections remain visibly distinct from both on and off. */
+window.luma-write-window .lumaui-bar-button.mixed,
+window.luma-write-window .luma-icon-button.mixed {
+  background: alpha(@luma_state, .5);
+  box-shadow: inset 0 -2px @luma_state_ink;
+}
+
+/* Floating cards keep their top highlight and lift without bright side rims. */
+window.luma-write-window box.lumaui-creative-panel-card {
+  box-shadow: inset 0 1px 0 @luma_float_highlight,
+              0 12px 32px -8px @luma_float_shadow, 0 2px 6px @luma_float_shadow_near;
+}
+window.luma-write-window .write-document-island {
+  border: none;
+  box-shadow: none;
+}
+
+/* Page position is ambient information on the canvas, with no control chrome. */
+.write-page-position {
+  padding: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+  color: @luma_muted;
+  font-size: 11px;
+  font-weight: 400;
+  text-shadow: 0 1px 2px alpha(black, .18);
+}

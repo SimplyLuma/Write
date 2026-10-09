@@ -1,0 +1,14 @@
+schema = 1
+
+[luma]
+repository = "https://github.com/SimplyLuma/luma"
+source_revision = "5f4854e6547e65f30cf78ba1c53fab8f78088fc0"
+
+[platform]
+path = "vendor/luma-platform"
+version = "0.1.0"
+mode = "qualified-source-snapshot"
+
+[engine]
+version_line = "26.2"
+qualified_version = "26.2.6.3"
