@@ -11,6 +11,8 @@ import subprocess
 parser = argparse.ArgumentParser()
 parser.add_argument('--binary', type=Path, required=True)
 parser.add_argument('--kit', type=Path, required=True)
+parser.add_argument('--icons', type=Path, required=True,
+                    help='Qualified LumaUI symbolic SVGs and SOURCE-MANIFEST.json')
 parser.add_argument('--staged', type=Path, required=True)
 parser.add_argument('--office', type=Path, default=Path('/usr/lib64/libreoffice'))
 parser.add_argument('--output', type=Path, required=True)
@@ -59,6 +61,18 @@ for folder in ['lib', 'lib64']:
         for path in (args.kit / folder).glob('*.so*'):
             copy_file(path, lib / path.name)
 copy_tree(args.staged / 'usr/share', out / 'share')
+# The kit API names lumaui-* icons, which are distributed separately from
+# its older luma-* App Kit assets. Never rely on the desktop's icon theme.
+icon_manifest = json.loads((args.icons / 'SOURCE-MANIFEST.json').read_text())
+for name, wanted in icon_manifest['files'].items():
+    if Path(name).name != name or not name.startswith('lumaui-') or not name.endswith('-symbolic.svg'):
+        raise RuntimeError('Invalid LumaUI icon source member')
+    source = args.icons / name
+    if hashlib.sha256(source.read_bytes()).hexdigest() != wanted:
+        raise RuntimeError(f'LumaUI icon source digest differs: {name}')
+    copy_file(source, out / 'share/icons/hicolor/scalable/actions' / name)
+copy_file(args.icons / 'SOURCE-MANIFEST.json', out / 'share/licenses/lumaui-icons/SOURCE-MANIFEST.json')
+copy_file(root / 'LICENSES/Lucide-ISC.txt', out / 'share/licenses/lumaui-icons/Lucide-ISC.txt')
 copy_tree(args.office, out / 'lib/office')
 # Only packaged runtime data and redistributable fonts, never user profiles.
 for folder in ['liblangtag', 'libexttextcat', 'libnumbertext', 'hunspell', 'hyphen']:

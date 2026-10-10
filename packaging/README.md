@@ -10,9 +10,14 @@ No separate LibreOffice installation is required of the user.
 
 `scripts/assemble-linux-bundle.py` assembles an x86_64 Linux payload containing
 the application, toolkit, LibreOffice program/filter/data tree, shared-library
-closure, fonts, licenses and package/source inventory. It does not copy user
+closure, fonts, LumaUI symbolic icons, licenses and package/source inventory. It does not copy user
 profiles, documents or credentials. Its launcher uses the included engine.
 
 Release artifacts belong outside Git. Retain checksums, source commit, build
 provenance, test results and corresponding-source material with every release.
 The repository manager signs the store release and publishes its Depot listing.
+
+Supply the qualified icon directory with `--icons`. Its SOURCE-MANIFEST.json
+pins every symbolic SVG; the assembler verifies the bytes before installation.
+Release downloads and corresponding sources are hosted on
+https://github.com/SimplyLuma/Write/releases.
