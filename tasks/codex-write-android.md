@@ -61,3 +61,8 @@ Write has a working candidate. macOS path discovery is preparation only.
 Rollback: revert source branch or remove the update manifest stanza; no deployed
 state changed. Released-device fixes require a higher-code repair APK, not an
 uninstall/downgrade. Git records the final online source/handoff revision.
+
+## Retry at Nick's request — 2026-10-11 UTC
+
+Secondary storage now has about 31 GiB free, but root has only 20.8 GiB.
+`devctl run write-android-retry --path /srv/dev/worktrees/write/codex-write-android --disk-gib 8 --wait -- bash scripts/build-android.sh` was again refused before launch (exit 75); the primary filesystem must preserve 20 GiB plus the job estimate and active reservations. The root-owned runtime at `/root/luma-port-20261001/android` is still unreadable by luma-dev-2, and its secondary data directory remains root-owned/nonwritable. No build, source change, install or cleanup occurred. Need sufficient primary storage and an assigned accessible Android build lane (or administrator-provisioned writable secondary lane recognized by admission). Merely freeing the secondary mount does not satisfy the current runner.
