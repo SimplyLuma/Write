@@ -66,3 +66,22 @@ uninstall/downgrade. Git records the final online source/handoff revision.
 
 Secondary storage now has about 31 GiB free, but root has only 20.8 GiB.
 `devctl run write-android-retry --path /srv/dev/worktrees/write/codex-write-android --disk-gib 8 --wait -- bash scripts/build-android.sh` was again refused before launch (exit 75); the primary filesystem must preserve 20 GiB plus the job estimate and active reservations. The root-owned runtime at `/root/luma-port-20261001/android` is still unreadable by luma-dev-2, and its secondary data directory remains root-owned/nonwritable. No build, source change, install or cleanup occurred. Need sufficient primary storage and an assigned accessible Android build lane (or administrator-provisioned writable secondary lane recognized by admission). Merely freeing the secondary mount does not satisfy the current runner.
+
+## Secondary authorized — 2026-10-11 UTC
+
+Nick explicitly authorized secondary. Carrier commit ec979fb, pushed to
+`agent/1003/codex-mobile-release`, includes a reproducible task-local runner
+patch that admits and writes artifacts on the selected secondary filesystem.
+Installed runner/policy are unchanged; the 20 GiB reserve remains. Two 8 GiB
+routing jobs passed five checks, including real writes and path ownership
+rejection; latest `dev-secondary-runner-materialized-39b50d24`, artifacts under
+`/mnt/luma-secondary/tmp/luma-dev-2-android/`. This supersedes the capacity
+block above: sufficient primary space is no longer needed for these outputs.
+
+APK compilation still awaits executable toolchain access and a working,
+digest-pinned cached container lane. Secondary is noexec, the existing /root
+SDK remains unreadable, and runtime probe `dev-android-secondary-runtime-d693f179`
+recorded Podman's newuidmap permission failure. No keys were copied or selected,
+no APK built and no device installed. Exact secondary invocation and evidence
+are in carrier `tools/luma-port/server/README.md`; temporary output is not a
+release or signing-key location.
