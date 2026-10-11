@@ -24,6 +24,7 @@
 
 #define LOK_USE_UNSTABLE_API
 #include <LibreOfficeKit/LibreOfficeKit.hxx>
+#include "engine/office_locations.hpp"
 
 #include <pwd.h>
 #include <unistd.h>
@@ -892,8 +893,7 @@ Result LibreOfficeEngine::Impl::initialize(const EngineConfiguration& requested_
       environment_path != nullptr && *environment_path != '\0') {
     candidates.emplace_back(environment_path);
   }
-  candidates.emplace_back("/usr/lib64/libreoffice/program");
-  candidates.emplace_back("/usr/lib/libreoffice/program");
+  luma::office::add_platform_candidates(candidates);
 
   std::string profile_url;
   if (configuration.private_profile_directory.has_value()) {
@@ -916,8 +916,7 @@ Result LibreOfficeEngine::Impl::initialize(const EngineConfiguration& requested_
 
   allow_spelling_languages();
   for (const auto& candidate : candidates) {
-    if (!std::filesystem::exists(candidate / "libsofficeapp.so") &&
-        !std::filesystem::exists(candidate / "libmergedlo.so")) {
+    if (!luma::office::looks_like_program_dir(candidate)) {
       continue;
     }
     office.reset(lok::lok_cpp_init(candidate.c_str(), profile_url.empty() ? nullptr
@@ -929,10 +928,14 @@ Result LibreOfficeEngine::Impl::initialize(const EngineConfiguration& requested_
   if (!office) {
     release_office_lease();
     office_lease_claimed = false;
+#if defined(__ANDROID__) || defined(__APPLE__)
+    return Result::failure("Could not initialize LibreOfficeKit. " + luma::office::where_to_install());
+#else
     return Result::failure(
         "Could not initialize the Fedora LibreOfficeKit installation. Expected "
         "libsofficeapp.so under /usr/lib64/libreoffice/program or "
         "LUMA_LIBREOFFICE_PROGRAM.");
+#endif
   }
 
   if (char* version_info = office->getVersionInfo(); version_info != nullptr) {

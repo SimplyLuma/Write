@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+[application]
+id = "org.projectluma.Write"
+name = "Write"
+version = "0.1.0-android.1"
+
+[port]
+kind = "native"
+executable = "luma-write"
+android_package = "org.projectluma.write"
+# Keep greater than the earlier 0.1.0 port (1024). Increment for EVERY Android build shipped.
+version_code = 1025
+
+[port.updates]
+repository = "SimplyLuma/Write"
+channel = "stable"

@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+# Historical carrier inputs to qualify with the released Write source, not a completed release.
+[carrier]
+repository = "https://github.com/nmcmil/ProjectLuma"
+baseline = "5dc0c6582bf5a500cad4cae98c907797584522a7"
+task_branch = "agent/1003/codex-mobile-release"
+ndk = "28.2.13676358"
+min_sdk = 31
+target_sdk = 35
+build_tools = "35.0.1"
+
+[libreoffice]
+version = "26.2.6.3"
+arm64_apk = "org.documentfoundation.libreoffice_131.apk"
+arm64_sha256 = "751ac3836890b79a56801bf6d9a2788cda3761ab5131a4f0b6abfbad822bb475"
+x86_64_apk = "org.documentfoundation.libreoffice_129.apk"
+x86_64_sha256 = "cfaf9eea5fd695c449e92eb10cc0b1617ec51d068345068cea9b7e1c67968df5"

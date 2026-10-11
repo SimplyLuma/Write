@@ -2,6 +2,7 @@ test_specs = [
   ['suite-contract', 'suite_contract_test.cpp'],
   ['command-registry', 'command_registry_test.cpp'],
   ['engine-core', 'engine_core_test.cpp'],
+  ['office-locations', 'office_locations_test.cpp'],
   ['accessibility-model', 'accessibility_model_test.cpp'],
   ['accessibility-traversal', 'accessibility_traversal_test.cpp'],
   ['compatibility-policy', 'compatibility_policy_test.cpp'],

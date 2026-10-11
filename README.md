@@ -32,6 +32,9 @@ See [building](docs/building.md) and [distribution](packaging/README.md).
 macOS, Windows and Android require their own native engine builds; Linux
 binaries cannot serve as those platforms’ dependencies.
 
+Android candidate preparation and remaining gates are documented in
+[Android](docs/android.md).
+
 ## Licenses
 
 Original software is Apache-2.0, documentation CC-BY-4.0, and original artwork
